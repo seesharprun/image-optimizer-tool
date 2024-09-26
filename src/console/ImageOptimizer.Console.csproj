@@ -4,8 +4,14 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <RootNamespace>ImageParser.Console</RootNamespace>
-
+    <RootNamespace>ImageOptimizer.Tool</RootNamespace>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>imageoptimize</ToolCommandName>
+    <PackageOutputPath>./nupkg</PackageOutputPath>
+    <PackageId>ImageOptimizer.Tool</PackageId>
+    <PackageVersion>0.0.1</PackageVersion>
+    <Description>Bulk optimize images</Description>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Humanizer" Version="2.*" />

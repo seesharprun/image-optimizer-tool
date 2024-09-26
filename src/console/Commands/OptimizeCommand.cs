@@ -1,13 +1,13 @@
 using System.Diagnostics.CodeAnalysis;
 using Humanizer;
 using ImageMagick;
-using ImageParser.Console.Models;
-using ImageParser.Console.Settings;
+using ImageOptimizer.Console.Models;
+using ImageOptimizer.Console.Settings;
 using Spectre.Console;
 using Spectre.Console.Cli;
 using Output = Spectre.Console.AnsiConsole;
 
-namespace ImageParser.Console.Commands;
+namespace ImageOptimizer.Console.Commands;
 
 internal sealed class OptimizeCommand : AsyncCommand<OptimizeSettings>
 {
