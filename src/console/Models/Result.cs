@@ -1,3 +1,3 @@
-namespace ImageParser.Models;
+namespace ImageParser.Console.Models;
 
 internal record Result(string filename, long originalFileSize, long optimizedFileSize);

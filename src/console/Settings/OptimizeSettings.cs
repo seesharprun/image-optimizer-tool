@@ -2,7 +2,7 @@ using System.ComponentModel;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
-namespace ImageParser.Settings;
+namespace ImageParser.Console.Settings;
 
 internal sealed class OptimizeSettings : CommandSettings
 {
