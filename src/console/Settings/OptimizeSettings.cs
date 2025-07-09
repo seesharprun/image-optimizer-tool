@@ -18,6 +18,10 @@ internal sealed class OptimizeSettings : CommandSettings
     [CommandOption("-t|--types <TYPES>")]
     public string[] FileTypes { get; init; } = { ".png", ".jpg" };
 
+    [Description("Whether to keep the transparency of the image. Defaults to false.")]
+    [CommandOption("-o|--opacity-transparent")]
+    public bool Transparent { get; init; } = false;
+
     public FileSystemInfo Source => _internalSource ?? new DirectoryInfo(Directory.GetCurrentDirectory());
 
     private FileSystemInfo? _internalSource => File is not null ? File : Path;

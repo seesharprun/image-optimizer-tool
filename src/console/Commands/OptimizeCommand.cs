@@ -42,8 +42,8 @@ internal sealed class OptimizeCommand : AsyncCommand<OptimizeSettings>
 
                 IEnumerable<Task<Result>> tasks = settings.Source switch
                 {
-                    FileInfo file => GetTasks(file),
-                    DirectoryInfo directory => GetTasks(directory, settings.FileTypes),
+                    FileInfo file => GetTasks(file, settings.Transparent),
+                    DirectoryInfo directory => GetTasks(directory, settings.FileTypes, settings.Transparent),
                     _ => throw new InvalidOperationException("Invalid path type.")
                 };
 
@@ -67,23 +67,32 @@ internal sealed class OptimizeCommand : AsyncCommand<OptimizeSettings>
         return 0;
     }
 
-    private IEnumerable<Task<Result>> GetTasks(FileInfo file) =>
-        new List<Task<Result>> { OptimizeFile(file.FullName) };
+    private IEnumerable<Task<Result>> GetTasks(FileInfo file, bool transparent) =>
+        new List<Task<Result>> { OptimizeFile(file.FullName, transparent) };
 
-    private IEnumerable<Task<Result>> GetTasks(DirectoryInfo directory, IEnumerable<string> fileTypes) =>
+    private IEnumerable<Task<Result>> GetTasks(DirectoryInfo directory, IEnumerable<string> fileTypes, bool transparent) =>
         directory
             .GetFiles()
             .Where(file => fileTypes.Any(type => file.FullName.EndsWith(type, StringComparison.OrdinalIgnoreCase)))
-            .Select(file => OptimizeFile(file.FullName));
+            .Select(file => OptimizeFile(file.FullName, transparent));
 
-    private async Task<Result> OptimizeFile(string filename)
+    private async Task<Result> OptimizeFile(string filename, bool transparent)
     {
         long originalFileSize = new FileInfo(filename).Length;
 
         MagickImage image = new(filename);
 
-        image.BackgroundColor = new MagickColor(MagickColors.White);
-        image.Alpha(AlphaOption.Remove);
+        if (!transparent)
+        {
+            image.BackgroundColor = new MagickColor(MagickColors.White);
+            image.Alpha(AlphaOption.Remove);
+        }
+        else
+        {
+            image.BackgroundColor = new MagickColor(MagickColors.Transparent);
+            image.Alpha(AlphaOption.Set);
+        }
+
         image.Quantize(new QuantizeSettings
         {
             Colors = 256
