@@ -22,7 +22,7 @@ jobs:
             9.x
             10.x
       - name: Package NuGet tool
-        run: dotnet pack tool.cs --include-source --include-symbols --configuration release
+        run: dotnet pack tool.cs --include-symbols --configuration release
       - name: Push NuGet packages
         working-directory: ./artifacts/tool
         run: dotnet nuget push "**/*.nupkg" --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate
