@@ -1,0 +1,15 @@
+<Project>
+  <PropertyGroup>
+    <NoWarn>$(NoWarn);NU5119</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="readme.md">
+      <Pack>true</Pack>
+      <PackagePath>\</PackagePath>
+    </Content>
+    <Content Include="icon.png">
+      <Pack>true</Pack>
+      <PackagePath>\</PackagePath>
+    </Content>
+  </ItemGroup>
+</Project>

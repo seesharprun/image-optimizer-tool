@@ -18,6 +18,8 @@
 #:property ProjectUrl=https://github.com/seesharprun/image-optimizer-tool#readme
 #:property RepositoryUrl=https://github.com/seesharprun/image-optimizer-tool
 #:property RepositoryType=git
+#:property PackageIcon=icon.png
+#:property PackageReadmeFile=readme.md
 
 using System.Diagnostics.CodeAnalysis;
 using Humanizer;
