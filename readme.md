@@ -1,6 +1,6 @@
 # Image Parser
 
-TODO
+A .NET command-line tool for optimizing image files. This tool reduces file sizes while maintaining quality by compressing PNG and JPG images in single files or entire directories.
 
 ## Arguments
 
@@ -14,29 +14,50 @@ TODO
 > [!TIP]
 > You should only specify `--file` or `--path`. If you specify both, `--file` takes priority.
 
-## Run in dev
+## Prerequisites
 
-TODO
+- [.NET 10](https://dotnet.microsoft.com/download/dotnet/10.0)
+
+## Dynamically run package
+
+Run the tool directly without installation using `dnx`:
 
 ```shell
-cd /src/console
-
-dotnet run -- --file "<file>"
-dotnet run -- --path "<directory>"
-dotnet run -- --path "<directory>" --types ".png" --types ".jpg"
+dnx SeeSharpRun.ImageOptimizer --file "<file>"
+dnx SeeSharpRun.ImageOptimizer --path "<directory>"
+dnx SeeSharpRun.ImageOptimizer --path "<directory>" --types ".png" --types ".jpg"
 ```
 
-## Package and install
+## Install package
 
-TODO
+Install the tool globally on your machine:
 
 ```shell
-cd /src/console
+dotnet tool install --global SeeSharpRun.ImageOptimizer
+```
 
-dotnet pack
-dotnet tool install --global --add-source .\nupkg\ ImageOptimizer.Tool
+After installation, run using `dotnet tool run`:
 
+```shell
+dotnet tool run SeeSharpRun.ImageOptimizer --file "<file>"
+dotnet tool run SeeSharpRun.ImageOptimizer --path "<directory>"
+dotnet tool run SeeSharpRun.ImageOptimizer --path "<directory>" --types ".png" --types ".jpg"
+```
+
+Or use the shorter command alias:
+
+```shell
 imageoptimize --file "<file>"
 imageoptimize --path "<directory>"
-imageoptimize --path "<directory>" --types ".jpg"
+imageoptimize --path "<directory>" --types ".png" --types ".jpg"
+```
+
+## Run in dev
+
+For development and testing, run directly from source:
+
+```shell
+dotnet run tool.cs -- --file "<file>"
+dotnet run tool.cs -- --path "<directory>"
+dotnet run tool.cs -- --path "<directory>" --types ".png" --types ".jpg"
 ```

@@ -1,0 +1,27 @@
+name: Continuous Integration
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+permissions:
+  contents: read
+jobs:
+  continuous-integration-dotnet:
+    name: .NET build and validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: |
+            8.x
+            9.x
+            10.x
+      - name: Validation tool build
+        run: |
+          dotnet build tool.cs --configuration release
+      - name: Validate package creation
+        run: |
+          dotnet pack tool.cs --configuration release

@@ -1,17 +1,37 @@
+#:package Humanizer@2.14.1
+#:package Magick.NET-Q8-AnyCPU@14.9.1
+#:package Spectre.Console.Cli@0.53.0
+#:package Spectre.Console@0.54.0
+
+#:property TargetFrameworks=net8.0;net9.0;net10.0
+#:property TargetFramework=net10.0
+#:property RollForward=LatestMajor
+#:property PublishAot=false
+#:property PackAsTool=true
+#:property AssemblyName=SeeSharpRun.ImageOptimizer
+#:property ToolCommandName=imageoptimize
+#:property PackageId=SeeSharpRun.ImageOptimizer
+#:property Authors=SeeSharpRun
+#:property Description=Command line to bulk optimize images for a specific image or path.
+#:property PackageLicenseExpression=MIT
+#:property PackageRequireLicenseAcceptance=false
+#:property ProjectUrl=https://github.com/seesharprun/image-optimizer-tool#readme
+#:property RepositoryUrl=https://github.com/seesharprun/image-optimizer-tool
+#:property RepositoryType=git
+
 using System.Diagnostics.CodeAnalysis;
 using Humanizer;
 using ImageMagick;
-using ImageOptimizer.Console.Models;
-using ImageOptimizer.Console.Settings;
 using Spectre.Console;
 using Spectre.Console.Cli;
+using System.ComponentModel;
 using Output = Spectre.Console.AnsiConsole;
 
-namespace ImageOptimizer.Console.Commands;
+await new CommandApp<OptimizeCommand>().RunAsync(args);
 
 internal sealed class OptimizeCommand : AsyncCommand<OptimizeSettings>
 {
-    public override async Task<int> ExecuteAsync(CommandContext _, [NotNull] OptimizeSettings settings)
+    public override async Task<int> ExecuteAsync(CommandContext _, [NotNull] OptimizeSettings settings, CancellationToken cancellationToken)
     {
         Output.MarkupLine("[bold olive]Staring image optimization[/]");
 
@@ -105,3 +125,36 @@ internal sealed class OptimizeCommand : AsyncCommand<OptimizeSettings>
         return new(filename, originalFileSize, optimizedFileSize);
     }
 }
+
+internal sealed class OptimizeSettings : CommandSettings
+{
+    [Description("The path to optimize images in.")]
+    [CommandOption("-p|--path <PATH>")]
+    public DirectoryInfo? Path { get; init; }
+
+    [Description("The file to optimize.")]
+    [CommandOption("-f|--file <FILE>")]
+    public FileInfo? File { get; init; }
+
+    [Description("The file types to optimize. Defaults to .png and .jpg.")]
+    [CommandOption("-t|--types <TYPES>")]
+    public string[] FileTypes { get; init; } = { ".png", ".jpg" };
+
+    [Description("Whether to keep the transparency of the image. Defaults to false.")]
+    [CommandOption("-o|--opacity-transparent")]
+    public bool Transparent { get; init; } = false;
+
+    public FileSystemInfo Source => _internalSource ?? new DirectoryInfo(Directory.GetCurrentDirectory());
+
+    private FileSystemInfo? _internalSource => File is not null ? File : Path;
+
+    public override ValidationResult Validate() =>
+        Source switch
+        {
+            null => ValidationResult.Error("A file or path is required."),
+            { Exists: false } => ValidationResult.Error("The specified file or path does not exist."),
+            _ => ValidationResult.Success()
+        };
+}
+
+internal record Result(string filename, long originalFileSize, long optimizedFileSize);

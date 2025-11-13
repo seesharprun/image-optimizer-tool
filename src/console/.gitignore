@@ -1,4 +1,0 @@
-## Rules for ignoring NuGet packages
-
-# Default nupkg folder
-nupkg/
