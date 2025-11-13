@@ -3,7 +3,6 @@
 #:package Spectre.Console.Cli@0.53.0
 #:package Spectre.Console@0.54.0
 
-#:property TargetFrameworks=net8.0;net9.0;net10.0
 #:property TargetFramework=net10.0
 #:property RollForward=LatestMajor
 #:property PublishAot=false
